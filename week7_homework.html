@@ -1,0 +1,1069 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.26">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Jonah DiGiacomo">
+<meta name="dcterms.date" content="2026-03-16">
+
+<title>Week 7 - Text, Labels &amp; Tables with Basic Baseball Analytics</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script><script src="week7_homework_files/libs/clipboard/clipboard.min.js"></script>
+<script src="week7_homework_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="week7_homework_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="week7_homework_files/libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="week7_homework_files/libs/quarto-html/popper.min.js"></script>
+<script src="week7_homework_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="week7_homework_files/libs/quarto-html/anchor.min.js"></script>
+<link href="week7_homework_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="week7_homework_files/libs/quarto-html/quarto-syntax-highlighting-597958c53c93a607afca12fd375c57ed.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="week7_homework_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="week7_homework_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="week7_homework_files/libs/bootstrap/bootstrap-4337dde1f221dad3c8afa01ee8ebc8f4.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<style>html{ scroll-behavior: smooth; }</style>
+<script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+<style>
+  body, .quarto-container, #quarto-content, .content {
+    background-color: #d6e8f7 !important;
+  }
+  .sidebar, #quarto-sidebar {
+    background-color: #b8d4ed !important;
+  }
+</style>
+
+
+</head>
+
+<body class="quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-full toc-left">
+<div id="quarto-sidebar-toc-left" class="sidebar toc-left">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#dataset-research-question" id="toc-dataset-research-question" class="nav-link active" data-scroll-target="#dataset-research-question"><span class="header-section-number">1</span> Dataset &amp; Research Question</a></li>
+  <li><a href="#setup" id="toc-setup" class="nav-link" data-scroll-target="#setup"><span class="header-section-number">2</span> Setup</a></li>
+  <li><a href="#chart-1-home-runs-vs.-runs-scored" id="toc-chart-1-home-runs-vs.-runs-scored" class="nav-link" data-scroll-target="#chart-1-home-runs-vs.-runs-scored"><span class="header-section-number">3</span> Chart 1: Home Runs vs.&nbsp;Runs Scored</a></li>
+  <li><a href="#chart-2-top-10-teams-by-runs-scored" id="toc-chart-2-top-10-teams-by-runs-scored" class="nav-link" data-scroll-target="#chart-2-top-10-teams-by-runs-scored"><span class="header-section-number">4</span> Chart 2: Top 10 Teams by Runs Scored</a></li>
+  <li><a href="#formatted-table-top-10-teams-by-wins" id="toc-formatted-table-top-10-teams-by-wins" class="nav-link" data-scroll-target="#formatted-table-top-10-teams-by-wins"><span class="header-section-number">5</span> Formatted Table: Top 10 Teams by Wins</a></li>
+  <li><a href="#reflection" id="toc-reflection" class="nav-link" data-scroll-target="#reflection"><span class="header-section-number">6</span> Reflection</a>
+  <ul class="collapse">
+  <li><a href="#labeling-and-annotation-design-choices" id="toc-labeling-and-annotation-design-choices" class="nav-link" data-scroll-target="#labeling-and-annotation-design-choices"><span class="header-section-number">6.1</span> Labeling and Annotation Design Choices</a></li>
+  </ul></li>
+  </ul>
+</nav>
+</div>
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+</div>
+<main class="content column-page-right" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Week 7 - Text, Labels &amp; Tables with Basic Baseball Analytics</h1>
+<p class="subtitle lead">DATS 2102 | Assignment 7 | Jonah DiGiacomo</p>
+</div>
+
+
+
+<div class="quarto-title-meta column-page-right">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Jonah DiGiacomo </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">March 16, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="dataset-research-question" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="dataset-research-question"><span class="header-section-number">1</span> Dataset &amp; Research Question</h2>
+<p>I used <strong>2023 MLB Team Statistics</strong> (Baseball Reference) covering all 30 teams across the full 162-game season. The dataset includes offensive output (runs scored, home runs, batting average) and pitching performance (ERA), with teams grouped by division.</p>
+<p><strong>Research question:</strong> <em>How does home run production relate to total runs scored, and which teams stand out at the extremes?</em></p>
+</section>
+<section id="setup" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="setup"><span class="header-section-number">2</span> Setup</h2>
+<div id="code-72190130" class="cell" data-execution_count="52">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.patches <span class="im">as</span> mpatches</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co"># ── 2023 MLB Team Statistics (Baseball Reference) ─────────────────────────────</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>teams <span class="op">=</span> [</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Atlanta Braves"</span>,<span class="st">"Los Angeles Dodgers"</span>,<span class="st">"Texas Rangers"</span>,<span class="st">"Tampa Bay Rays"</span>,</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Baltimore Orioles"</span>,<span class="st">"Milwaukee Brewers"</span>,<span class="st">"Philadelphia Phillies"</span>,</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Houston Astros"</span>,<span class="st">"Minnesota Twins"</span>,<span class="st">"Arizona Diamondbacks"</span>,</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Seattle Mariners"</span>,<span class="st">"San Francisco Giants"</span>,<span class="st">"Boston Red Sox"</span>,</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Toronto Blue Jays"</span>,<span class="st">"Cincinnati Reds"</span>,<span class="st">"New York Mets"</span>,</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Cleveland Guardians"</span>,<span class="st">"San Diego Padres"</span>,<span class="st">"Miami Marlins"</span>,<span class="st">"Detroit Tigers"</span>,</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Pittsburgh Pirates"</span>,<span class="st">"St. Louis Cardinals"</span>,<span class="st">"Chicago Cubs"</span>,<span class="st">"New York Yankees"</span>,</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Los Angeles Angels"</span>,<span class="st">"Washington Nationals"</span>,<span class="st">"Colorado Rockies"</span>,</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Kansas City Royals"</span>,<span class="st">"Oakland Athletics"</span>,<span class="st">"Chicago White Sox"</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>runs  <span class="op">=</span> [<span class="dv">947</span>,<span class="dv">906</span>,<span class="dv">881</span>,<span class="dv">771</span>,<span class="dv">807</span>,<span class="dv">724</span>,<span class="dv">796</span>,<span class="dv">737</span>,<span class="dv">738</span>,<span class="dv">746</span>,<span class="dv">690</span>,<span class="dv">668</span>,<span class="dv">788</span>,<span class="dv">725</span>,<span class="dv">743</span>,<span class="dv">715</span>,<span class="dv">674</span>,<span class="dv">672</span>,<span class="dv">662</span>,<span class="dv">668</span>,<span class="dv">642</span>,<span class="dv">686</span>,<span class="dv">683</span>,<span class="dv">677</span>,<span class="dv">663</span>,<span class="dv">649</span>,<span class="dv">755</span>,<span class="dv">645</span>,<span class="dv">530</span>,<span class="dv">493</span>]</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>hrs   <span class="op">=</span> [<span class="dv">307</span>,<span class="dv">244</span>,<span class="dv">230</span>,<span class="dv">184</span>,<span class="dv">222</span>,<span class="dv">189</span>,<span class="dv">213</span>,<span class="dv">173</span>,<span class="dv">194</span>,<span class="dv">210</span>,<span class="dv">179</span>,<span class="dv">156</span>,<span class="dv">171</span>,<span class="dv">196</span>,<span class="dv">197</span>,<span class="dv">167</span>,<span class="dv">130</span>,<span class="dv">152</span>,<span class="dv">169</span>,<span class="dv">147</span>,<span class="dv">136</span>,<span class="dv">162</span>,<span class="dv">177</span>,<span class="dv">162</span>,<span class="dv">159</span>,<span class="dv">174</span>,<span class="dv">199</span>,<span class="dv">141</span>,<span class="dv">108</span>,<span class="dv">97</span>]</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>avg   <span class="op">=</span> [<span class="fl">.270</span>,<span class="fl">.261</span>,<span class="fl">.250</span>,<span class="fl">.253</span>,<span class="fl">.254</span>,<span class="fl">.246</span>,<span class="fl">.268</span>,<span class="fl">.264</span>,<span class="fl">.249</span>,<span class="fl">.253</span>,<span class="fl">.248</span>,<span class="fl">.245</span>,<span class="fl">.265</span>,<span class="fl">.251</span>,<span class="fl">.256</span>,<span class="fl">.255</span>,<span class="fl">.241</span>,<span class="fl">.239</span>,<span class="fl">.252</span>,<span class="fl">.249</span>,<span class="fl">.237</span>,<span class="fl">.249</span>,<span class="fl">.244</span>,<span class="fl">.245</span>,<span class="fl">.239</span>,<span class="fl">.246</span>,<span class="fl">.263</span>,<span class="fl">.248</span>,<span class="fl">.219</span>,<span class="fl">.210</span>]</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>era   <span class="op">=</span> [<span class="fl">4.01</span>,<span class="fl">4.24</span>,<span class="fl">4.23</span>,<span class="fl">3.73</span>,<span class="fl">4.11</span>,<span class="fl">4.09</span>,<span class="fl">4.41</span>,<span class="fl">3.74</span>,<span class="fl">4.76</span>,<span class="fl">4.05</span>,<span class="fl">4.04</span>,<span class="fl">4.06</span>,<span class="fl">4.33</span>,<span class="fl">4.15</span>,<span class="fl">4.82</span>,<span class="fl">4.57</span>,<span class="fl">3.87</span>,<span class="fl">4.06</span>,<span class="fl">4.14</span>,<span class="fl">4.01</span>,<span class="fl">4.68</span>,<span class="fl">4.79</span>,<span class="fl">4.71</span>,<span class="fl">4.77</span>,<span class="fl">4.88</span>,<span class="fl">5.23</span>,<span class="fl">5.79</span>,<span class="fl">4.99</span>,<span class="fl">5.58</span>,<span class="fl">5.47</span>]</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>wins  <span class="op">=</span> [<span class="dv">104</span>,<span class="dv">100</span>,<span class="dv">90</span>,<span class="dv">99</span>,<span class="dv">101</span>,<span class="dv">92</span>,<span class="dv">90</span>,<span class="dv">90</span>,<span class="dv">87</span>,<span class="dv">84</span>,<span class="dv">88</span>,<span class="dv">79</span>,<span class="dv">78</span>,<span class="dv">89</span>,<span class="dv">82</span>,<span class="dv">75</span>,<span class="dv">76</span>,<span class="dv">82</span>,<span class="dv">84</span>,<span class="dv">78</span>,<span class="dv">76</span>,<span class="dv">71</span>,<span class="dv">83</span>,<span class="dv">82</span>,<span class="dv">73</span>,<span class="dv">72</span>,<span class="dv">59</span>,<span class="dv">56</span>,<span class="dv">50</span>,<span class="dv">61</span>]</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>divs  <span class="op">=</span> [</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>    <span class="st">"NL East"</span>,<span class="st">"NL West"</span>,<span class="st">"AL West"</span>,<span class="st">"AL East"</span>,<span class="st">"AL East"</span>,<span class="st">"NL Central"</span>,<span class="st">"NL East"</span>,</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>    <span class="st">"AL West"</span>,<span class="st">"AL Central"</span>,<span class="st">"NL West"</span>,<span class="st">"AL West"</span>,<span class="st">"NL West"</span>,<span class="st">"AL East"</span>,<span class="st">"AL East"</span>,</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>    <span class="st">"NL Central"</span>,<span class="st">"NL East"</span>,<span class="st">"AL Central"</span>,<span class="st">"NL West"</span>,<span class="st">"NL East"</span>,<span class="st">"AL Central"</span>,</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>    <span class="st">"NL Central"</span>,<span class="st">"NL Central"</span>,<span class="st">"NL Central"</span>,<span class="st">"AL East"</span>,<span class="st">"AL West"</span>,<span class="st">"NL East"</span>,</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>    <span class="st">"NL West"</span>,<span class="st">"AL Central"</span>,<span class="st">"AL West"</span>,<span class="st">"AL Central"</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Team"</span>: teams, <span class="st">"Runs"</span>: runs, <span class="st">"HR"</span>: hrs,</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>    <span class="st">"AVG"</span>: avg, <span class="st">"ERA"</span>: era, <span class="st">"Wins"</span>: wins, <span class="st">"Division"</span>: divs</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Dataset loaded: </span><span class="sc">{</span><span class="bu">len</span>(df)<span class="sc">}</span><span class="ss"> teams"</span>)</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>df.head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Dataset loaded: 30 teams</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="52">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">Team</th>
+<th data-quarto-table-cell-role="th">Runs</th>
+<th data-quarto-table-cell-role="th">HR</th>
+<th data-quarto-table-cell-role="th">AVG</th>
+<th data-quarto-table-cell-role="th">ERA</th>
+<th data-quarto-table-cell-role="th">Wins</th>
+<th data-quarto-table-cell-role="th">Division</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>Atlanta Braves</td>
+<td>947</td>
+<td>307</td>
+<td>0.270</td>
+<td>4.01</td>
+<td>104</td>
+<td>NL East</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>Los Angeles Dodgers</td>
+<td>906</td>
+<td>244</td>
+<td>0.261</td>
+<td>4.24</td>
+<td>100</td>
+<td>NL West</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>Texas Rangers</td>
+<td>881</td>
+<td>230</td>
+<td>0.250</td>
+<td>4.23</td>
+<td>90</td>
+<td>AL West</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">3</th>
+<td>Tampa Bay Rays</td>
+<td>771</td>
+<td>184</td>
+<td>0.253</td>
+<td>3.73</td>
+<td>99</td>
+<td>AL East</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">4</th>
+<td>Baltimore Orioles</td>
+<td>807</td>
+<td>222</td>
+<td>0.254</td>
+<td>4.11</td>
+<td>101</td>
+<td>AL East</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+<section id="chart-1-home-runs-vs.-runs-scored" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="chart-1-home-runs-vs.-runs-scored"><span class="header-section-number">3</span> Chart 1: Home Runs vs.&nbsp;Runs Scored</h2>
+<p>A scatter plot showing all 30 MLB teams colored by division, with a trend line and <strong>two annotations</strong> anchoring the extremes: Atlanta Braves (MLB-best offense) and Chicago White Sox (league-worst).</p>
+<div id="code-81823387" class="cell" data-execution_count="53">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>div_colors <span class="op">=</span> {</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"AL East"</span>:<span class="st">"#1f77b4"</span>, <span class="st">"AL Central"</span>:<span class="st">"#aec7e8"</span>, <span class="st">"AL West"</span>:<span class="st">"#2ca02c"</span>,</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"NL East"</span>:<span class="st">"#d62728"</span>, <span class="st">"NL Central"</span>:<span class="st">"#ff9896"</span>, <span class="st">"NL West"</span>:<span class="st">"#9467bd"</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">11</span>, <span class="dv">7</span>))</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> div, grp <span class="kw">in</span> df.groupby(<span class="st">"Division"</span>):</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    ax.scatter(grp[<span class="st">"HR"</span>], grp[<span class="st">"Runs"</span>], color<span class="op">=</span>div_colors[div],</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>               s<span class="op">=</span><span class="dv">110</span>, label<span class="op">=</span>div, zorder<span class="op">=</span><span class="dv">3</span>, edgecolors<span class="op">=</span><span class="st">"white"</span>, linewidth<span class="op">=</span><span class="fl">0.8</span>)</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"Home Runs"</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">"Runs Scored"</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"2023 MLB: Home Runs vs. Runs Scored by Team</span><span class="ch">\n</span><span class="st">(Color = Division)"</span>,</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>             fontsize<span class="op">=</span><span class="dv">14</span>, fontweight<span class="op">=</span><span class="st">"bold"</span>, pad<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Trend line</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>m, b <span class="op">=</span> np.polyfit(df[<span class="st">"HR"</span>], df[<span class="st">"Runs"</span>], <span class="dv">1</span>)</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>xline <span class="op">=</span> np.linspace(df[<span class="st">"HR"</span>].<span class="bu">min</span>()<span class="op">-</span><span class="dv">10</span>, df[<span class="st">"HR"</span>].<span class="bu">max</span>()<span class="op">+</span><span class="dv">10</span>, <span class="dv">100</span>)</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>ax.plot(xline, m<span class="op">*</span>xline<span class="op">+</span>b, color<span class="op">=</span><span class="st">"gray"</span>, linestyle<span class="op">=</span><span class="st">"--"</span>, linewidth<span class="op">=</span><span class="fl">1.2</span>, alpha<span class="op">=</span><span class="fl">0.6</span>)</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Annotation 1 — Atlanta Braves (MLB-best offense)</span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>atl <span class="op">=</span> df[df[<span class="st">"Team"</span>]<span class="op">==</span><span class="st">"Atlanta Braves"</span>].iloc[<span class="dv">0</span>]</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>ax.annotate(</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Atlanta Braves</span><span class="ch">\n</span><span class="st">(MLB-best 947 R, 307 HR)"</span>,</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>    xy<span class="op">=</span>(atl[<span class="st">"HR"</span>], atl[<span class="st">"Runs"</span>]),</span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>    xytext<span class="op">=</span>(atl[<span class="st">"HR"</span>]<span class="op">-</span><span class="dv">52</span>, atl[<span class="st">"Runs"</span>]<span class="op">-</span><span class="dv">42</span>),</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>    fontsize<span class="op">=</span><span class="dv">9</span>, fontweight<span class="op">=</span><span class="st">"bold"</span>, color<span class="op">=</span><span class="st">"#d62728"</span>,</span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>    arrowprops<span class="op">=</span><span class="bu">dict</span>(arrowstyle<span class="op">=</span><span class="st">"-&gt;"</span>, color<span class="op">=</span><span class="st">"#d62728"</span>, lw<span class="op">=</span><span class="fl">1.5</span>),</span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>    bbox<span class="op">=</span><span class="bu">dict</span>(boxstyle<span class="op">=</span><span class="st">"round,pad=0.3"</span>, fc<span class="op">=</span><span class="st">"white"</span>, ec<span class="op">=</span><span class="st">"#d62728"</span>, lw<span class="op">=</span><span class="fl">1.2</span>)</span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a><span class="co"># Annotation 2 — Chicago White Sox (worst offense)</span></span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>cws <span class="op">=</span> df[df[<span class="st">"Team"</span>]<span class="op">==</span><span class="st">"Chicago White Sox"</span>].iloc[<span class="dv">0</span>]</span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>ax.annotate(</span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Chicago White Sox</span><span class="ch">\n</span><span class="st">(League-worst 493 R, 61 W)"</span>,</span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>    xy<span class="op">=</span>(cws[<span class="st">"HR"</span>], cws[<span class="st">"Runs"</span>]),</span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>    xytext<span class="op">=</span>(cws[<span class="st">"HR"</span>]<span class="op">+</span><span class="dv">15</span>, cws[<span class="st">"Runs"</span>]<span class="op">+</span><span class="dv">35</span>),</span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>    fontsize<span class="op">=</span><span class="dv">9</span>, fontweight<span class="op">=</span><span class="st">"bold"</span>, color<span class="op">=</span><span class="st">"#555"</span>,</span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>    arrowprops<span class="op">=</span><span class="bu">dict</span>(arrowstyle<span class="op">=</span><span class="st">"-&gt;"</span>, color<span class="op">=</span><span class="st">"#555"</span>, lw<span class="op">=</span><span class="fl">1.5</span>),</span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>    bbox<span class="op">=</span><span class="bu">dict</span>(boxstyle<span class="op">=</span><span class="st">"round,pad=0.3"</span>, fc<span class="op">=</span><span class="st">"white"</span>, ec<span class="op">=</span><span class="st">"#aaa"</span>, lw<span class="op">=</span><span class="fl">1.2</span>)</span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a>ax.legend(title<span class="op">=</span><span class="st">"Division"</span>, fontsize<span class="op">=</span><span class="fl">8.5</span>, title_fontsize<span class="op">=</span><span class="dv">9</span>,</span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a>          loc<span class="op">=</span><span class="st">"upper left"</span>, framealpha<span class="op">=</span><span class="fl">0.9</span>)</span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>ax.grid(<span class="va">True</span>, linestyle<span class="op">=</span><span class="st">":"</span>, alpha<span class="op">=</span><span class="fl">0.4</span>)</span>
+<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span>
+<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="week7_homework_files/figure-html/cell-3-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<blockquote class="blockquote">
+<p>The Atlanta Braves led the majors with 947 runs and a record tying 307 home runs; the trend line confirms a strong positive relationship between HR and runs scored.</p>
+</blockquote>
+</section>
+<section id="chart-2-top-10-teams-by-runs-scored" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="chart-2-top-10-teams-by-runs-scored"><span class="header-section-number">4</span> Chart 2: Top 10 Teams by Runs Scored</h2>
+<p>A <strong>labeled</strong> horizontal bar chart. No legend is used because values are annotated on each bar.</p>
+<div id="code-42621632" class="cell" data-scrolled="true" data-execution_count="55">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pybaseball <span class="im">import</span> team_batting</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Pull 2023 team batting stats</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> team_batting(<span class="dv">2023</span>)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df.rename(columns<span class="op">=</span>{<span class="st">"R"</span>: <span class="st">"Runs"</span>, <span class="st">"Team"</span>: <span class="st">"Team"</span>})</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>RUNS_PER_HR <span class="op">=</span> <span class="fl">1.4</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>top10 <span class="op">=</span> df.nlargest(<span class="dv">10</span>, <span class="st">"Runs"</span>).sort_values(<span class="st">"Runs"</span>).copy()</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>top10[<span class="st">"HR_Runs"</span>]    <span class="op">=</span> (top10[<span class="st">"HR"</span>] <span class="op">*</span> RUNS_PER_HR).<span class="bu">round</span>().astype(<span class="bu">int</span>)</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>top10[<span class="st">"Other_Runs"</span>] <span class="op">=</span> top10[<span class="st">"Runs"</span>] <span class="op">-</span> top10[<span class="st">"HR_Runs"</span>]</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>hr_colors    <span class="op">=</span> [<span class="st">"#c0392b"</span> <span class="cf">if</span> t <span class="op">==</span> <span class="st">"Atlanta Braves"</span> <span class="cf">else</span> <span class="st">"#e07b6a"</span> <span class="cf">for</span> t <span class="kw">in</span> top10[<span class="st">"Team"</span>]]</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>other_colors <span class="op">=</span> [<span class="st">"#922b21"</span> <span class="cf">if</span> t <span class="op">==</span> <span class="st">"Atlanta Braves"</span> <span class="cf">else</span> <span class="st">"#2e5fa3"</span> <span class="cf">for</span> t <span class="kw">in</span> top10[<span class="st">"Team"</span>]]</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>bars_other <span class="op">=</span> ax.barh(top10[<span class="st">"Team"</span>], top10[<span class="st">"Other_Runs"</span>],</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>                     color<span class="op">=</span>other_colors, edgecolor<span class="op">=</span><span class="st">"white"</span>, height<span class="op">=</span><span class="fl">0.65</span>, label<span class="op">=</span><span class="st">"Other Runs"</span>)</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>bars_hr    <span class="op">=</span> ax.barh(top10[<span class="st">"Team"</span>], top10[<span class="st">"HR_Runs"</span>],</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>                     left<span class="op">=</span>top10[<span class="st">"Other_Runs"</span>],</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>                     color<span class="op">=</span>hr_colors, edgecolor<span class="op">=</span><span class="st">"white"</span>, height<span class="op">=</span><span class="fl">0.65</span>, label<span class="op">=</span><span class="st">"Runs via HR"</span>)</span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Total label at end of each bar</span></span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> bar_o, (_, row) <span class="kw">in</span> <span class="bu">zip</span>(bars_other, top10.iterrows()):</span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>    y_center <span class="op">=</span> bar_o.get_y() <span class="op">+</span> bar_o.get_height() <span class="op">/</span> <span class="dv">2</span></span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>    ax.text(row[<span class="st">"Runs"</span>] <span class="op">+</span> <span class="dv">6</span>, y_center,</span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>            <span class="ss">f'</span><span class="sc">{</span>row[<span class="st">"Runs"</span>]<span class="sc">}</span><span class="ss">'</span>, va<span class="op">=</span><span class="st">"center"</span>, ha<span class="op">=</span><span class="st">"left"</span>,</span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>            fontsize<span class="op">=</span><span class="dv">10</span>, fontweight<span class="op">=</span><span class="st">"bold"</span>, color<span class="op">=</span><span class="st">"black"</span>)</span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a><span class="co"># Segment value labels inside bars (only if wide enough)</span></span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> bar_o, bar_h, (_, row) <span class="kw">in</span> <span class="bu">zip</span>(bars_other, bars_hr, top10.iterrows()):</span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> row[<span class="st">"Other_Runs"</span>] <span class="op">&gt;</span> <span class="dv">60</span>:</span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>        ax.text(bar_o.get_x() <span class="op">+</span> bar_o.get_width() <span class="op">/</span> <span class="dv">2</span>,</span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>                bar_o.get_y() <span class="op">+</span> bar_o.get_height() <span class="op">/</span> <span class="dv">2</span>,</span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>                <span class="ss">f'</span><span class="sc">{</span>row[<span class="st">"Other_Runs"</span>]<span class="sc">}</span><span class="ss">'</span>, va<span class="op">=</span><span class="st">"center"</span>, ha<span class="op">=</span><span class="st">"center"</span>,</span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a>                fontsize<span class="op">=</span><span class="dv">8</span>, color<span class="op">=</span><span class="st">"white"</span>, fontweight<span class="op">=</span><span class="st">"bold"</span>)</span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> row[<span class="st">"HR_Runs"</span>] <span class="op">&gt;</span> <span class="dv">40</span>:</span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>        ax.text(bar_h.get_x() <span class="op">+</span> bar_h.get_width() <span class="op">/</span> <span class="dv">2</span>,</span>
+<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>                bar_h.get_y() <span class="op">+</span> bar_h.get_height() <span class="op">/</span> <span class="dv">2</span>,</span>
+<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a>                <span class="ss">f'</span><span class="sc">{</span>row[<span class="st">"HR_Runs"</span>]<span class="sc">}</span><span class="ss">'</span>, va<span class="op">=</span><span class="st">"center"</span>, ha<span class="op">=</span><span class="st">"center"</span>,</span>
+<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a>                fontsize<span class="op">=</span><span class="dv">8</span>, color<span class="op">=</span><span class="st">"white"</span>, fontweight<span class="op">=</span><span class="st">"bold"</span>)</span>
+<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"Runs Scored"</span>, fontsize<span class="op">=</span><span class="dv">11</span>)</span>
+<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"Top 10 MLB Teams by Runs Scored - 2023 Season</span><span class="ch">\n</span><span class="st">(Segmented: Runs via HR vs. Other Runs)"</span>,</span>
+<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a>             fontsize<span class="op">=</span><span class="dv">13</span>, fontweight<span class="op">=</span><span class="st">"bold"</span>, pad<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a>ax.set_xlim(<span class="dv">0</span>, <span class="dv">1090</span>)</span>
+<span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a>ax.spines[<span class="st">"top"</span>].set_visible(<span class="va">False</span>)</span>
+<span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a>ax.spines[<span class="st">"right"</span>].set_visible(<span class="va">False</span>)</span>
+<span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a>ax.grid(axis<span class="op">=</span><span class="st">"x"</span>, linestyle<span class="op">=</span><span class="st">":"</span>, alpha<span class="op">=</span><span class="fl">0.4</span>)</span>
+<span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a>ax.legend(loc<span class="op">=</span><span class="st">"lower right"</span>, fontsize<span class="op">=</span><span class="dv">9</span>, framealpha<span class="op">=</span><span class="fl">0.9</span>)</span>
+<span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span>
+<span id="cb4-54"><a href="#cb4-54" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="week7_homework_files/figure-html/cell-5-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<blockquote class="blockquote">
+<p><strong>Key finding:</strong> Atlanta, LA Dodgers, and Texas Rangers are separated from the rest of the field — a visible gap appears after the top three.</p>
+</blockquote>
+</section>
+<section id="formatted-table-top-10-teams-by-wins" class="level2" data-number="5">
+<h2 data-number="5" class="anchored" data-anchor-id="formatted-table-top-10-teams-by-wins"><span class="header-section-number">5</span> Formatted Table: Top 10 Teams by Wins</h2>
+<div id="code-61986770" class="cell" data-scrolled="true" data-execution_count="51">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>wins_2023 <span class="op">=</span> {</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"ATL"</span>: <span class="dv">104</span>, <span class="st">"LAD"</span>: <span class="dv">100</span>, <span class="st">"BAL"</span>: <span class="dv">101</span>, <span class="st">"TBR"</span>: <span class="dv">99</span>, <span class="st">"MIL"</span>: <span class="dv">92</span>, <span class="st">"HOU"</span>: <span class="dv">90</span>,</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"MIN"</span>: <span class="dv">87</span>, <span class="st">"ARI"</span>: <span class="dv">84</span>, <span class="st">"PHI"</span>: <span class="dv">90</span>, <span class="st">"TEX"</span>: <span class="dv">90</span>, <span class="st">"TOR"</span>: <span class="dv">89</span>, <span class="st">"BOS"</span>: <span class="dv">78</span>,</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"SFG"</span>: <span class="dv">79</span>, <span class="st">"SEA"</span>: <span class="dv">88</span>, <span class="st">"CIN"</span>: <span class="dv">82</span>, <span class="st">"NYM"</span>: <span class="dv">75</span>, <span class="st">"CHC"</span>: <span class="dv">83</span>, <span class="st">"CLE"</span>: <span class="dv">76</span>,</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"LAA"</span>: <span class="dv">73</span>, <span class="st">"PIT"</span>: <span class="dv">76</span>, <span class="st">"SDP"</span>: <span class="dv">82</span>, <span class="st">"NYY"</span>: <span class="dv">82</span>, <span class="st">"MIA"</span>: <span class="dv">84</span>, <span class="st">"DET"</span>: <span class="dv">78</span>,</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"STL"</span>: <span class="dv">71</span>, <span class="st">"WSN"</span>: <span class="dv">71</span>, <span class="st">"COL"</span>: <span class="dv">59</span>, <span class="st">"KCR"</span>: <span class="dv">56</span>, <span class="st">"OAK"</span>: <span class="dv">50</span>, <span class="st">"CHW"</span>: <span class="dv">61</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>division_finish <span class="op">=</span> {</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"ATL"</span>: <span class="st">"1st NL East"</span>, <span class="st">"PHI"</span>: <span class="st">"2nd NL East"</span>, <span class="st">"MIA"</span>: <span class="st">"3rd NL East"</span>, <span class="st">"NYM"</span>: <span class="st">"4th NL East"</span>, <span class="st">"WSN"</span>: <span class="st">"5th NL East"</span>,</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"MIL"</span>: <span class="st">"1st NL Central"</span>, <span class="st">"CHC"</span>: <span class="st">"2nd NL Central"</span>, <span class="st">"CIN"</span>: <span class="st">"3rd NL Central"</span>, <span class="st">"PIT"</span>: <span class="st">"4th NL Central"</span>, <span class="st">"STL"</span>: <span class="st">"5th NL Central"</span>,</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">"LAD"</span>: <span class="st">"1st NL West"</span>, <span class="st">"ARI"</span>: <span class="st">"2nd NL West"</span>, <span class="st">"SDP"</span>: <span class="st">"3rd NL West"</span>, <span class="st">"SFG"</span>: <span class="st">"4th NL West"</span>, <span class="st">"COL"</span>: <span class="st">"5th NL West"</span>,</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">"BAL"</span>: <span class="st">"1st AL East"</span>, <span class="st">"TBR"</span>: <span class="st">"2nd AL East"</span>, <span class="st">"TOR"</span>: <span class="st">"3rd AL East"</span>, <span class="st">"NYY"</span>: <span class="st">"4th AL East"</span>, <span class="st">"BOS"</span>: <span class="st">"5th AL East"</span>,</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">"MIN"</span>: <span class="st">"1st AL Central"</span>, <span class="st">"CLE"</span>: <span class="st">"2nd AL Central"</span>, <span class="st">"CHW"</span>: <span class="st">"3rd AL Central"</span>, <span class="st">"DET"</span>: <span class="st">"4th AL Central"</span>, <span class="st">"KCR"</span>: <span class="st">"5th AL Central"</span>,</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">"HOU"</span>: <span class="st">"1st AL West"</span>, <span class="st">"TEX"</span>: <span class="st">"2nd AL West"</span>, <span class="st">"SEA"</span>: <span class="st">"3rd AL West"</span>, <span class="st">"LAA"</span>: <span class="st">"4th AL West"</span>, <span class="st">"OAK"</span>: <span class="st">"5th AL West"</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"Wins"</span>] <span class="op">=</span> df[<span class="st">"Team"</span>].<span class="bu">map</span>(wins_2023)</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"DivFinish"</span>] <span class="op">=</span> df[<span class="st">"Team"</span>].<span class="bu">map</span>(division_finish)</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"HR_RunPct"</span>] <span class="op">=</span> ((df[<span class="st">"HR"</span>] <span class="op">*</span> <span class="fl">1.4</span>) <span class="op">/</span> df[<span class="st">"Runs"</span>] <span class="op">*</span> <span class="dv">100</span>).<span class="bu">round</span>(<span class="dv">1</span>)</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>table_df <span class="op">=</span> (</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>    df.nlargest(<span class="dv">10</span>, <span class="st">"Wins"</span>)[[<span class="st">"Team"</span>, <span class="st">"Wins"</span>, <span class="st">"Runs"</span>, <span class="st">"HR"</span>, <span class="st">"HR_RunPct"</span>, <span class="st">"AVG"</span>, <span class="st">"OPS"</span>, <span class="st">"WAR"</span>, <span class="st">"DivFinish"</span>]]</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>    .reset_index(drop<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>table_df.index <span class="op">=</span> table_df.index <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>table_df.columns <span class="op">=</span> [<span class="st">"Team"</span>, <span class="st">"W"</span>, <span class="st">"R"</span>, <span class="st">"HR"</span>, <span class="st">"R% via HR"</span>, <span class="st">"AVG"</span>, <span class="st">"OPS"</span>, <span class="st">"bWAR"</span>, <span class="st">"Finish"</span>]</span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>table_df[<span class="st">"AVG"</span>] <span class="op">=</span> table_df[<span class="st">"AVG"</span>].<span class="bu">map</span>(<span class="st">"</span><span class="sc">{:.3f}</span><span class="st">"</span>.<span class="bu">format</span>)</span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>table_df[<span class="st">"OPS"</span>] <span class="op">=</span> table_df[<span class="st">"OPS"</span>].<span class="bu">map</span>(<span class="st">"</span><span class="sc">{:.3f}</span><span class="st">"</span>.<span class="bu">format</span>)</span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>table_df[<span class="st">"bWAR"</span>] <span class="op">=</span> table_df[<span class="st">"bWAR"</span>].<span class="bu">map</span>(<span class="st">"</span><span class="sc">{:.1f}</span><span class="st">"</span>.<span class="bu">format</span>)</span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>table_df[<span class="st">"R% via HR"</span>] <span class="op">=</span> table_df[<span class="st">"R% via HR"</span>].<span class="bu">map</span>(<span class="st">"</span><span class="sc">{:.1f}</span><span class="st">%"</span>.<span class="bu">format</span>)</span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>(</span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>    table_df.style</span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>    .set_caption(<span class="st">"2023 MLB - Top 10 Teams by Wins"</span>)</span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>    .set_table_styles([</span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a>        {<span class="st">"selector"</span>: <span class="st">"caption"</span>,</span>
+<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a>         <span class="st">"props"</span>: [(<span class="st">"font-size"</span>, <span class="st">"13px"</span>), (<span class="st">"font-weight"</span>, <span class="st">"bold"</span>),</span>
+<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a>                   (<span class="st">"text-align"</span>, <span class="st">"left"</span>), (<span class="st">"padding-bottom"</span>, <span class="st">"6px"</span>)]},</span>
+<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a>        {<span class="st">"selector"</span>: <span class="st">"th"</span>,</span>
+<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a>         <span class="st">"props"</span>: [(<span class="st">"background-color"</span>, <span class="st">"#2c3e50"</span>), (<span class="st">"color"</span>, <span class="st">"white"</span>),</span>
+<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a>                   (<span class="st">"text-align"</span>, <span class="st">"center"</span>), (<span class="st">"padding"</span>, <span class="st">"6px 10px"</span>), (<span class="st">"font-size"</span>, <span class="st">"11px"</span>)]},</span>
+<span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a>        {<span class="st">"selector"</span>: <span class="st">"td"</span>,</span>
+<span id="cb5-44"><a href="#cb5-44" aria-hidden="true" tabindex="-1"></a>         <span class="st">"props"</span>: [(<span class="st">"text-align"</span>, <span class="st">"center"</span>), (<span class="st">"padding"</span>, <span class="st">"5px 10px"</span>), (<span class="st">"font-size"</span>, <span class="st">"11px"</span>)]},</span>
+<span id="cb5-45"><a href="#cb5-45" aria-hidden="true" tabindex="-1"></a>        {<span class="st">"selector"</span>: <span class="st">"tr:nth-child(even)"</span>,</span>
+<span id="cb5-46"><a href="#cb5-46" aria-hidden="true" tabindex="-1"></a>         <span class="st">"props"</span>: [(<span class="st">"background-color"</span>, <span class="st">"#f2f2f2"</span>)]},</span>
+<span id="cb5-47"><a href="#cb5-47" aria-hidden="true" tabindex="-1"></a>    ])</span>
+<span id="cb5-48"><a href="#cb5-48" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">apply</span>(<span class="kw">lambda</span> col: [</span>
+<span id="cb5-49"><a href="#cb5-49" aria-hidden="true" tabindex="-1"></a>        <span class="st">"background-color: #ffe0e0; font-weight: bold;"</span> <span class="cf">if</span> v <span class="op">==</span> <span class="dv">104</span> <span class="cf">else</span> <span class="st">""</span></span>
+<span id="cb5-50"><a href="#cb5-50" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> v <span class="kw">in</span> col], subset<span class="op">=</span>[<span class="st">"W"</span>])</span>
+<span id="cb5-51"><a href="#cb5-51" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="51">
+<style type="text/css">
+#T_384a5 caption {
+  font-size: 13px;
+  font-weight: bold;
+  text-align: left;
+  padding-bottom: 6px;
+}
+#T_384a5 th {
+  background-color: #2c3e50;
+  color: white;
+  text-align: center;
+  padding: 6px 10px;
+  font-size: 11px;
+}
+#T_384a5 td {
+  text-align: center;
+  padding: 5px 10px;
+  font-size: 11px;
+}
+#T_384a5 tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+#T_384a5_row0_col1 {
+  background-color: #ffe0e0;
+  font-weight: bold;
+}
+</style>
+
+<div id="T_384a5" class="quarto-float quarto-figure quarto-figure-center anchored" data-quarto-postprocess="true">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="T_384a5-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;1: 2023 MLB - Top 10 Teams by Wins
+</figcaption>
+<div aria-describedby="T_384a5-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table id="T_384a5" class="caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th class="blank level0" data-quarto-table-cell-role="th">&nbsp;</th>
+<th id="T_384a5_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">Team</th>
+<th id="T_384a5_level0_col1" class="col_heading level0 col1" data-quarto-table-cell-role="th">W</th>
+<th id="T_384a5_level0_col2" class="col_heading level0 col2" data-quarto-table-cell-role="th">R</th>
+<th id="T_384a5_level0_col3" class="col_heading level0 col3" data-quarto-table-cell-role="th">HR</th>
+<th id="T_384a5_level0_col4" class="col_heading level0 col4" data-quarto-table-cell-role="th">R% via HR</th>
+<th id="T_384a5_level0_col5" class="col_heading level0 col5" data-quarto-table-cell-role="th">AVG</th>
+<th id="T_384a5_level0_col6" class="col_heading level0 col6" data-quarto-table-cell-role="th">OPS</th>
+<th id="T_384a5_level0_col7" class="col_heading level0 col7" data-quarto-table-cell-role="th">bWAR</th>
+<th id="T_384a5_level0_col8" class="col_heading level0 col8" data-quarto-table-cell-role="th">Finish</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th id="T_384a5_level0_row0" class="row_heading level0 row0" data-quarto-table-cell-role="th">1</th>
+<td id="T_384a5_row0_col0" class="data row0 col0">ATL</td>
+<td id="T_384a5_row0_col1" class="data row0 col1">104</td>
+<td id="T_384a5_row0_col2" class="data row0 col2">947</td>
+<td id="T_384a5_row0_col3" class="data row0 col3">307</td>
+<td id="T_384a5_row0_col4" class="data row0 col4">45.4%</td>
+<td id="T_384a5_row0_col5" class="data row0 col5">0.276</td>
+<td id="T_384a5_row0_col6" class="data row0 col6">0.845</td>
+<td id="T_384a5_row0_col7" class="data row0 col7">41.3</td>
+<td id="T_384a5_row0_col8" class="data row0 col8">1st NL East</td>
+</tr>
+<tr class="even">
+<th id="T_384a5_level0_row1" class="row_heading level0 row1" data-quarto-table-cell-role="th">2</th>
+<td id="T_384a5_row1_col0" class="data row1 col0">BAL</td>
+<td id="T_384a5_row1_col1" class="data row1 col1">101</td>
+<td id="T_384a5_row1_col2" class="data row1 col2">807</td>
+<td id="T_384a5_row1_col3" class="data row1 col3">183</td>
+<td id="T_384a5_row1_col4" class="data row1 col4">31.7%</td>
+<td id="T_384a5_row1_col5" class="data row1 col5">0.255</td>
+<td id="T_384a5_row1_col6" class="data row1 col6">0.742</td>
+<td id="T_384a5_row1_col7" class="data row1 col7">23.8</td>
+<td id="T_384a5_row1_col8" class="data row1 col8">1st AL East</td>
+</tr>
+<tr class="odd">
+<th id="T_384a5_level0_row2" class="row_heading level0 row2" data-quarto-table-cell-role="th">3</th>
+<td id="T_384a5_row2_col0" class="data row2 col0">LAD</td>
+<td id="T_384a5_row2_col1" class="data row2 col1">100</td>
+<td id="T_384a5_row2_col2" class="data row2 col2">906</td>
+<td id="T_384a5_row2_col3" class="data row2 col3">249</td>
+<td id="T_384a5_row2_col4" class="data row2 col4">38.5%</td>
+<td id="T_384a5_row2_col5" class="data row2 col5">0.257</td>
+<td id="T_384a5_row2_col6" class="data row2 col6">0.795</td>
+<td id="T_384a5_row2_col7" class="data row2 col7">31.1</td>
+<td id="T_384a5_row2_col8" class="data row2 col8">1st NL West</td>
+</tr>
+<tr class="even">
+<th id="T_384a5_level0_row3" class="row_heading level0 row3" data-quarto-table-cell-role="th">4</th>
+<td id="T_384a5_row3_col0" class="data row3 col0">TBR</td>
+<td id="T_384a5_row3_col1" class="data row3 col1">99</td>
+<td id="T_384a5_row3_col2" class="data row3 col2">860</td>
+<td id="T_384a5_row3_col3" class="data row3 col3">230</td>
+<td id="T_384a5_row3_col4" class="data row3 col4">37.4%</td>
+<td id="T_384a5_row3_col5" class="data row3 col5">0.260</td>
+<td id="T_384a5_row3_col6" class="data row3 col6">0.776</td>
+<td id="T_384a5_row3_col7" class="data row3 col7">31.5</td>
+<td id="T_384a5_row3_col8" class="data row3 col8">2nd AL East</td>
+</tr>
+<tr class="odd">
+<th id="T_384a5_level0_row4" class="row_heading level0 row4" data-quarto-table-cell-role="th">5</th>
+<td id="T_384a5_row4_col0" class="data row4 col0">MIL</td>
+<td id="T_384a5_row4_col1" class="data row4 col1">92</td>
+<td id="T_384a5_row4_col2" class="data row4 col2">728</td>
+<td id="T_384a5_row4_col3" class="data row4 col3">165</td>
+<td id="T_384a5_row4_col4" class="data row4 col4">31.7%</td>
+<td id="T_384a5_row4_col5" class="data row4 col5">0.240</td>
+<td id="T_384a5_row4_col6" class="data row4 col6">0.704</td>
+<td id="T_384a5_row4_col7" class="data row4 col7">18.9</td>
+<td id="T_384a5_row4_col8" class="data row4 col8">1st NL Central</td>
+</tr>
+<tr class="even">
+<th id="T_384a5_level0_row5" class="row_heading level0 row5" data-quarto-table-cell-role="th">6</th>
+<td id="T_384a5_row5_col0" class="data row5 col0">TEX</td>
+<td id="T_384a5_row5_col1" class="data row5 col1">90</td>
+<td id="T_384a5_row5_col2" class="data row5 col2">881</td>
+<td id="T_384a5_row5_col3" class="data row5 col3">233</td>
+<td id="T_384a5_row5_col4" class="data row5 col4">37.0%</td>
+<td id="T_384a5_row5_col5" class="data row5 col5">0.263</td>
+<td id="T_384a5_row5_col6" class="data row5 col6">0.790</td>
+<td id="T_384a5_row5_col7" class="data row5 col7">35.2</td>
+<td id="T_384a5_row5_col8" class="data row5 col8">2nd AL West</td>
+</tr>
+<tr class="odd">
+<th id="T_384a5_level0_row6" class="row_heading level0 row6" data-quarto-table-cell-role="th">7</th>
+<td id="T_384a5_row6_col0" class="data row6 col0">HOU</td>
+<td id="T_384a5_row6_col1" class="data row6 col1">90</td>
+<td id="T_384a5_row6_col2" class="data row6 col2">827</td>
+<td id="T_384a5_row6_col3" class="data row6 col3">222</td>
+<td id="T_384a5_row6_col4" class="data row6 col4">37.6%</td>
+<td id="T_384a5_row6_col5" class="data row6 col5">0.259</td>
+<td id="T_384a5_row6_col6" class="data row6 col6">0.768</td>
+<td id="T_384a5_row6_col7" class="data row6 col7">26.7</td>
+<td id="T_384a5_row6_col8" class="data row6 col8">1st AL West</td>
+</tr>
+<tr class="even">
+<th id="T_384a5_level0_row7" class="row_heading level0 row7" data-quarto-table-cell-role="th">8</th>
+<td id="T_384a5_row7_col0" class="data row7 col0">PHI</td>
+<td id="T_384a5_row7_col1" class="data row7 col1">90</td>
+<td id="T_384a5_row7_col2" class="data row7 col2">796</td>
+<td id="T_384a5_row7_col3" class="data row7 col3">220</td>
+<td id="T_384a5_row7_col4" class="data row7 col4">38.7%</td>
+<td id="T_384a5_row7_col5" class="data row7 col5">0.256</td>
+<td id="T_384a5_row7_col6" class="data row7 col6">0.765</td>
+<td id="T_384a5_row7_col7" class="data row7 col7">21.8</td>
+<td id="T_384a5_row7_col8" class="data row7 col8">2nd NL East</td>
+</tr>
+<tr class="odd">
+<th id="T_384a5_level0_row8" class="row_heading level0 row8" data-quarto-table-cell-role="th">9</th>
+<td id="T_384a5_row8_col0" class="data row8 col0">TOR</td>
+<td id="T_384a5_row8_col1" class="data row8 col1">89</td>
+<td id="T_384a5_row8_col2" class="data row8 col2">746</td>
+<td id="T_384a5_row8_col3" class="data row8 col3">188</td>
+<td id="T_384a5_row8_col4" class="data row8 col4">35.3%</td>
+<td id="T_384a5_row8_col5" class="data row8 col5">0.256</td>
+<td id="T_384a5_row8_col6" class="data row8 col6">0.745</td>
+<td id="T_384a5_row8_col7" class="data row8 col7">24.9</td>
+<td id="T_384a5_row8_col8" class="data row8 col8">3rd AL East</td>
+</tr>
+<tr class="even">
+<th id="T_384a5_level0_row9" class="row_heading level0 row9" data-quarto-table-cell-role="th">10</th>
+<td id="T_384a5_row9_col0" class="data row9 col0">SEA</td>
+<td id="T_384a5_row9_col1" class="data row9 col1">88</td>
+<td id="T_384a5_row9_col2" class="data row9 col2">758</td>
+<td id="T_384a5_row9_col3" class="data row9 col3">210</td>
+<td id="T_384a5_row9_col4" class="data row9 col4">38.8%</td>
+<td id="T_384a5_row9_col5" class="data row9 col5">0.242</td>
+<td id="T_384a5_row9_col6" class="data row9 col6">0.734</td>
+<td id="T_384a5_row9_col7" class="data row9 col7">27.0</td>
+<td id="T_384a5_row9_col8" class="data row9 col8">3rd AL West</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="reflection" class="level2" data-number="6">
+<h2 data-number="6" class="anchored" data-anchor-id="reflection"><span class="header-section-number">6</span> Reflection</h2>
+<section id="labeling-and-annotation-design-choices" class="level3" data-number="6.1">
+<h3 data-number="6.1" class="anchored" data-anchor-id="labeling-and-annotation-design-choices"><span class="header-section-number">6.1</span> Labeling and Annotation Design Choices</h3>
+<p>For <strong>Chart 1</strong>, I used a scatter plot to surface the positive relationship between home run production and total runs scored across all 30 MLB teams. The two annotations were chosen to anchor the extremes: the Atlanta Braves at the top-right (the best offense in baseball by nearly every measure) and the Chicago White Sox at the bottom-left (the worst). Rather than labeling every point, which would have created clutter, I used a dashed trend line to communicate the general correlation and let the two annotations do the interpretive work. Arrow-styled callout boxes with contrasting colors (red for the Braves, gray for the White Sox) ensure the annotations read clearly without blending into the data.</p>
+<p>For <strong>Chart 2</strong>, I used a horizontal stacked bar chart to break down each team’s run production into two components: runs estimated from home runs and all other runs. Rather than a single bar per team, the segmentation lets the reader see not just how many runs a team scored but how they scored them. Color differentiates the two segments, with the Braves highlighted in a deeper red to flag them as the clear outlier. Total run labels are placed at the right end of each bar so the reader gets the summary figure without needing to mentally add the two segments.</p>
+<p>For the <strong>formatted table</strong>, I updated the approach to pull live 2023 team batting data via pybaseball (FanGraphs), which allowed me to include additional sabermetric columns including OPS, batting WAR, and division finish, that go beyond what a static Baseball Reference table would offer. The table still sorts by wins to complement rather than duplicate the charts’ focus on runs. Division finish replaces the raw division label to add standings context at a glance, and numeric columns are consistently formatted (AVG and OPS to three decimals, bWAR to one).</p>
+<hr>
+<p><em>Data source: Baseball Reference, 2023 MLB Team Statistics.</em></p>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+<script src="week7_homework_files/libs/quarto-html/zenscroll-min.js"></script>
+</body></html>
